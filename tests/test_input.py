@@ -1,15 +1,14 @@
 import pytest
 import json
 from pages.input import InputAPI
+from tests.test_purchase import PURCHASE_DATA
 from utils.request_handler import load_from_json
-
-PURCHASE_FILE = "generated_purchase.json"
 
 
 @pytest.fixture
 def input_payload():
     """Test uchun input ma'lumotlari"""
-    purchase_data = load_from_json(PURCHASE_FILE)
+    purchase_data = load_from_json(PURCHASE_DATA)
     assert purchase_data is not None, "❌ JSON fayldan purchase ma'lumotlari o‘qib olinmadi!"
     assert "purchase_id" in purchase_data and "purchase_item_id" in purchase_data, "❌ JSON ichida purchase_id yoki purchase_item_id mavjud emas!"
 
@@ -26,7 +25,7 @@ def input_payload():
                 "input_id": "",
                 "input_number": "",
                 "input_time": "03.03.2025",
-                "status": "D",
+                "status": "N",
                 "warehouse_code": "0106",
                 "note": "test api-1",
                 "input_items": [
