@@ -1,4 +1,4 @@
-BASE_URL = "https://smartup.online/b/anor/mxsx/mkw"
+BASE_URL = "https://smartup.online/b"
 
 USERNAME = "tjasur@test"
 PASSWORD = "01062001"
@@ -11,8 +11,8 @@ HEADERS = {
 
 # API endpointlar
 ENDPOINTS = {
-    "purchase_import": f"{BASE_URL}/purchase$import",
-    "purchase_export": f"{BASE_URL}/purchase$export",
-    "input_import": f"{BASE_URL}/input$import",
-    "input_export": f"{BASE_URL}/input$export",
+    "purchase_import": f"{BASE_URL}/anor/mxsx/mkw/purchase$import",
+    "purchase_export": f"{BASE_URL}/anor/mxsx/mkw/purchase$export",
+    "input_import": f"{BASE_URL}/anor/mxsx/mkw/input$import",
+    "input_export": f"{BASE_URL}/anor/mxsx/mkw/input$export",
 }

@@ -1,32 +1,60 @@
 import pytest
 import json
 from pages.input import InputAPI
+from utils.request_handler import load_from_json
+
+PURCHASE_FILE = "generated_purchase.json"
 
 
 @pytest.fixture
 def input_payload():
     """Test uchun input ma'lumotlari"""
+    purchase_data = load_from_json(PURCHASE_FILE)
+    assert purchase_data is not None, "❌ JSON fayldan purchase ma'lumotlari o‘qib olinmadi!"
+    assert "purchase_id" in purchase_data and "purchase_item_id" in purchase_data, "❌ JSON ichida purchase_id yoki purchase_item_id mavjud emas!"
+
+    purchase_id = purchase_data["purchase_id"]
+    purchase_item_id = purchase_data["purchase_item_id"]
+
+    print(f"🔹 Yuklangan purchase_id: {purchase_id}, purchase_item_id: {purchase_item_id}")
+
     return {
-      "filial_codes": [
-        {
-          "filial_code": ""
-        }
-      ],
-      "filial_code": "",
-      "external_id": "",
-      "input_id": "1157959",  # STATIC DATA
-      "begin_input_date": "",
-      "end_input_date": "",
-      "begin_created_on": "",
-      "end_created_on": "",
-      "begin_modified_on": "",
-      "end_modified_on": ""
+        "input": [
+            {
+                "filial_code": "1212",
+                "external_id": "",
+                "input_id": "",
+                "input_number": "",
+                "input_time": "03.03.2025",
+                "status": "D",
+                "warehouse_code": "0106",
+                "note": "test api-1",
+                "input_items": [
+                    {
+                        "external_id": None,
+                        "input_item_id": "",
+                        "purchase_id": purchase_id,
+                        "purchase_item_id": purchase_item_id,
+                        "product_code": "4545",
+                        "inventory_kind": "G",
+                        "card_code": None,
+                        "expiry_date": None,
+                        "quantity": "10",
+                        "price": "10000",
+                        "margin_kind": "P",
+                        "margin_value": "0",
+                        "vat_percent": None,
+                        "vat_amount": "0"
+                    }
+                ]
+            }
+        ]
     }
 
 
-def test_create_input(purchase_payload):
-    """✅ Input yaratish test"""
-    response = InputAPI.create_input(purchase_payload)
+def test_create_input(input_payload):
+    """Input yaratish testi"""
+    response = InputAPI.create_input(input_payload)
 
     print("✅ API Response:", response.json())
 
@@ -38,7 +66,7 @@ def test_create_input(purchase_payload):
 
 
 def test_get_inputs():
-    """✅ Barcha input larni olish va natijani tekshirish"""
+    """Barcha input larni olish va natijani tekshirish"""
     response = InputAPI.get_inputs()
 
     response_data = response.json()
@@ -51,7 +79,3 @@ def test_get_inputs():
     assert "input" in response_data, "❌ 'input' kaliti JSON javobda yo‘q!"
 
     assert len(response_data["input"]) > 0, "❌ 'input' ro‘yxati bo‘sh!"
-
-
-
-
